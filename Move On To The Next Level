@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class LoadLevel : MonoBehaviour {
+
+    public int enemyNumber;
+    public MeshRenderer rend;
+
+    private void Start() {
+
+        //  rend = GetComponent<MeshRenderer>();
+        //   rend.enabled = false;
+
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
+            enemyNumber++;
+
+        }
+
+        transform.parent.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+        transform.parent.GetChild(1).GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    void OnTriggerEnter(Collider collision) {
+
+        Debug.Log("OnEnter");
+        Debug.Log (collision.gameObject.tag);
+        Debug.Log (enemyNumber);
+
+        var door = GameObject.FindGameObjectsWithTag("Door");
+
+        if (collision.gameObject.tag == "Player" && (door[0].GetComponent<LoadLevel>().enemyNumber == 0 || door[1].GetComponent<LoadLevel>().enemyNumber == 0) ) {
+            Debug.Log("Door");
+            GameObject.FindGameObjectWithTag("LevelManager").GetComponent<MoveScene>().LoadLevel();
+            
+        }
+
+    }
+    private void Update() {
+
+        if (enemyNumber == 0) {
+
+            transform.parent.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+            transform.parent.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
+            transform.parent.GetChild(1).GetComponent<BoxCollider>().enabled = false;
+
+        }
+    }
+}
+
+
+//        var counter = 0;
+//        if (!enemies) {
+
+
+//            if (counter == 0)
+//                GameObject.FindGameObjectWithTag("LevelManager").GetComponent<MoveScene>().LoadLevel();
+//            GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0.5f * counter + 0.5f);
+
+
+//        }
+//    }
+//}
