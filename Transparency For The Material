@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Transparent : MonoBehaviour {
+
+    public bool fade;
+    public float timer;
+    public float fadeSpeed;
+    private float alpha = 1;
+    private void Update() {
+        
+        //if(timer > 0) timer -= Time.deltaTime;
+        //else fade = true;
+
+        Color col = new Vector4(0.6f, 0.6f, 0.6f, alpha);
+        GetComponent<Renderer>().material.color = col;
+
+        if (fade) {
+            if (alpha > 0.2) alpha -= Time.deltaTime * fadeSpeed;
+
+        } else {
+
+            if(alpha < 1) alpha += Time.deltaTime * fadeSpeed;
+
+        }
+       
+        //if (fade == true) {
+        //    Color col = new Vector4(1, 1, 1, 0.2f);
+        //    GetComponent<Renderer>().material.color = col;
+        //    fade = false;
+        //}else {
+        //    Color col = new Vector4(0.125f, 0.125f, 0.125f, 1);
+        //    GetComponent<Renderer>().material.color = col;
+        //}
+    }
+
+}
