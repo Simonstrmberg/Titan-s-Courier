@@ -1,0 +1,50 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+
+public class MoveScene : MonoBehaviour {
+
+    private int indexId;
+    private string levelToLoadName = "";
+    public List<string> levelNames = new List<string>();
+    public Scene currentLevel;
+    public bool onHUB;
+    static MoveScene instans;
+
+    void Start() {
+
+        //LoadLevel();
+
+        DontDestroyOnLoad(transform.gameObject);
+
+        if (instans)
+            Destroy(gameObject);
+           else
+          {
+            instans = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    public void LoadLevel() {
+
+        indexId = Random.Range(0, levelNames.Count);
+        currentLevel = SceneManager.GetActiveScene();
+        levelToLoadName = levelNames[indexId];
+
+        if (levelToLoadName != currentLevel.name && levelNames.Count > 0) {
+            SceneManager.LoadScene(levelToLoadName);
+			
+            if(!onHUB) levelNames.RemoveAt(indexId);
+            onHUB = false;
+		}
+			else {
+
+            LoadLevel();
+        }
+
+        if (levelNames.Count == 0) {
+            SceneManager.LoadScene("BossLvl");
+        }
+    }
+}
